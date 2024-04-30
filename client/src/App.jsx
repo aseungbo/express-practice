@@ -45,8 +45,7 @@ function App() {
         if (!response.ok) {
           throw new Error('Failed to add todo');
         }
-        const newTodo = await response.json();
-        setTodoList([...todoList, newTodo]);
+        fetchData();
         setTodo('');
       }
     } catch (error) {
@@ -56,7 +55,7 @@ function App() {
 
   const handleDeleteTodo = async (todo) => {
     try {
-      const response = await fetch(`http://localhost:3000/todos/${todo.id}`, {
+      const response = await fetch(`http://localhost:3000/todos/${todo._id}`, {
         method: 'DELETE',
         mode: 'cors',
       })
@@ -77,7 +76,7 @@ function App() {
         headers: {
           'Content-Type': 'application/json' 
         },
-        body: JSON.stringify({id: editTodoId, text: editTodoText})
+        body: JSON.stringify({_id: editTodoId, text: editTodoText})
       });
       if (!response.ok) {
         throw new Error('Failed to edit todo');
@@ -113,8 +112,8 @@ function App() {
       <div>
         <ul>
           {todoList.map(todo => (
-              <li key={todo.id}>
-                {editTodoId !== todo.id ? (
+              <li key={todo._id}>
+                {editTodoId !== todo._id ? (
                   <>
                     <span>
                       {todo.text}
@@ -122,7 +121,7 @@ function App() {
                     <button onClick={() => handleDeleteTodo(todo)}>
                       Delete
                     </button>
-                    <button onClick={() => setEditTodoId(todo.id)}>
+                    <button onClick={() => setEditTodoId(todo._id)}>
                       Edit
                     </button>
                   </>
